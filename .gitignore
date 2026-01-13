@@ -1,0 +1,6 @@
+*.mp4
+
+**Question_1_Coin_Detection/Coin_Detection_yolo/video/
+**Question_1_Coin_Detection/Coin_Detection_yolo/video_mix/
+**Question_1_Coin_Detection/Coin_Detection_yolo/dataset_create/
+**Question_1_Coin_Detection/Coin_Detection_yolo/dataset/
