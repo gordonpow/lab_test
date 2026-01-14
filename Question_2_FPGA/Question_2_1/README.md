@@ -15,8 +15,25 @@
 
 ## 2. 邏輯流程圖 (Flowchart)
 
-系統核心邏輯如下圖所示，狀態機根據當前計數器 `timer` 的數值決定是否跳轉至下一個顏色狀態。
+```mermaid
+    graph TD
+        Start((重置 Reset)) -->|rst_n = 0| S_Green[綠燈 S_GREEN]
+        
+        subgraph 循環邏輯
+        S_Green -->|timer = 7| S_Yellow[黃燈 S_YELLOW]
+        S_Green -->|timer < 7| S_Green
+        
+        S_Yellow -->|timer = 1| S_Red[紅燈 S_RED]
+        S_Yellow -->|timer < 1| S_Yellow
+        
+        S_Red -->|timer = 9| S_Green
+        S_Red -->|timer < 9| S_Red
+        end
 
+        style S_Green fill:#d4edda,stroke:#28a745
+        style S_Yellow fill:#fff3cd,stroke:#ffc107
+        style S_Red fill:#f8d7da,stroke:#dc3545
+```
 
 
 ---
