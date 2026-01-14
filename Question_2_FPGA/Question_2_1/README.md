@@ -90,24 +90,31 @@ stateDiagram-v2
 | S_YELLOW | 010 | 2 Clks |
 | S_RED | 100 | 10 Clks |
 
+
+### light bus 所代表之含義
+| light [?] | 所代表之燈號 | 
+| :--- | :--- |
+| light [0] | 綠燈 |
+| light [1] | 黃燈 |
+| light [2] | 紅燈 |
+
+---
+## RTL
+![RTL](./img/RTL.png)
+
 ---
 
 ## 4. 模擬成果 (Results)
 
-透過 VHDL Testbench 進行功能驗證，下圖展示了時序波形的模擬結果：
-
-![成果展示](./img/成果展示.png)
-
-
-### 模擬現象觀察：
 1.  **Reset 階段**：當 `rst_n` 為低電位時，輸出立即回到 `S_GREEN`。
    
-   ![RESET](./img/RESET.png)
+    ![RESET](./img/RESET.png)
 
 2.  **自動循環**：
     * 在時脈第 1 到 8 個週期顯示綠燈。
     * 第 9 到 10 個週期轉換為黃燈。
     * 第 11 到 20 個週期轉換為紅燈，隨後回到綠燈完成循環。
+    ![成果展示](./img/成果展示.png)
 
 ---
 
