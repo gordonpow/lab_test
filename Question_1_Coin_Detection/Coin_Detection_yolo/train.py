@@ -6,7 +6,7 @@ def start_training():
     yaml_path = os.path.abspath("dataset/data.yaml")
     
     # 2. 載入 YOLOv11 預訓練模型 (n 代表 nano，速度最快)
-    model = YOLO("yolo11n.pt") 
+    model = YOLO("yolo11m.pt") 
 
     # 3. 開始訓練
     print("開始訓練 YOLOv11 模型...")
