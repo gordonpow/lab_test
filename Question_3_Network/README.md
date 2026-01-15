@@ -4,18 +4,7 @@
 
 ---
 
-## 系統架構流程圖
 
-```mermaid
-graph TD
-    User[使用者/前端] -->|HTTP Request| Django[Django Backend]
-    Django -->|CRUD| DB[(SQLite Database)]
-    Django -->|Chat Prompt| AI["Ollama AI (Local)"]
-    AI -->|Recommendation| Django
-    Django -->|JSON Response| User
-```
-
----
 
 ## 功能特色 (Features)
 
@@ -35,6 +24,19 @@ graph TD
     - 系統會將目前館藏書籍清單注入給 AI。
     - AI 根據使用者詢問 (例如：「我想學程式設計」) 推薦適合的書籍。
     - **結構化回應**: 後端會解析 AI 回覆中的 `[BOOK_ID]` 標記，並直接回傳書籍詳細資料 (JSON) 給前端。
+
+---
+
+## 系統架構流程圖
+
+```mermaid
+graph TD
+    User[使用者/前端] -->|HTTP Request| Django[Django Backend]
+    Django -->|CRUD| DB[(SQLite Database)]
+    Django -->|Chat Prompt| AI["Ollama AI (Local)"]
+    AI -->|Recommendation| Django
+    Django -->|JSON Response| User
+```
 
 ---
 
@@ -58,3 +60,44 @@ graph TD
 ## 成果展示 (Results Showcase)
 
 ### 1. 使用者介面
+
+* **使用者初始介面** :使用者最一開始看到的界面。
+
+    ![使用者初始介面](./img/使用者初始介面.png)
+    ![使用者初始介面](./gif/使用者介面.gif)
+
+
+### 2.搜尋功能
+
+* **搜尋功能** :使用者可以輸入關鍵字或是ISBN來搜尋書籍。
+
+    ![搜尋功能](./gif/搜尋功能.gif)
+
+### 3. AI聊天機器人
+
+* **AI聊天機器人** :使用者可以輸入自己想要看的領域或想要學習的主題，AI會回覆推薦的書籍。且可以直接顯示借閱書籍的按鈕。
+
+    ![AI聊天機器人](./gif/機器人回答.gif)
+
+### 4. 借閱功能
+
+* **借閱功能** :使用者可以借閱書籍，借閱後會顯示借閱紀錄，且可以顯示借閱的書籍。
+
+    ![借閱功能](./gif/借書功能.gif)
+
+### 5. 借閱紀錄
+
+* **借閱紀錄** :使用者可以查看自己的借閱紀錄，且顯示借閱的書籍、借閱日期、借閱到期日、借閱狀態。
+  
+  ![借閱紀錄](./gif/借閱紀錄.gif)
+
+### 6. 還書功能
+
+* **還書功能** :使用者可以在期限內還書，還書後該比資料會從借書紀錄消失，且庫存會加回。
+  ![還書功能](./gif/還書功能.gif)
+
+### 7. 深淺色模式
+
+* **深淺色模式** :使用者可以切換深淺色模式，且可以儲存使用者的設定。
+
+  ![深淺色模式](./gif/深淺模式切換.gif)
