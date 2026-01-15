@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Dark Mode Test</title>
+    <style>
+        :root {
+            --bg-color: #f5f7fa;
+            --text-color: #333;
+            --card-bg: white;
+            --input-bg: white;
+            --input-border: #ddd;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+
+            /* Chatbot Variables (Light) */
+            --chat-bg: white;
+            --msg-bg-bot: #e0e0e0;
+            --msg-text-bot: #333;
+            --msg-bg-user: #3498db;
+            --msg-text-user: white;
+            --chat-header-bg: #3498db;
+            --chat-input-area-bg: white;
+        }
+
+        body.dark-mode {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --card-bg: #2d2d2d;
+            --input-bg: #333;
+            --input-border: #555;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+
+            /* Chatbot Variables (Dark) */
+            --chat-bg: #2d2d2d;
+            --msg-bg-bot: #444;
+            --msg-text-bot: #ddd;
+            --msg-bg-user: #1d6fa5;
+            --msg-text-user: #e0e0e0;
+            --chat-header-bg: #1d6fa5;
+            --chat-input-area-bg: #2d2d2d;
+        }
+
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .chat-window {
+            width: 350px;
+            height: 450px;
+            background: var(--chat-bg);
+            border: 1px solid var(--input-border);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-header {
+            background: var(--chat-header-bg);
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+
+        .msg-bot {
+            background: var(--msg-bg-bot);
+            color: var(--msg-text-bot);
+            align-self: flex-start;
+        }
+
+        .msg-user {
+            background: var(--msg-bg-user);
+            color: var(--msg-text-user);
+            align-self: flex-end;
+        }
+
+        .chat-input-area {
+            padding: 10px;
+            border-top: 1px solid var(--input-border);
+            display: flex;
+            gap: 10px;
+            background: var(--chat-input-area-bg);
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 20px;
+        }
+
+        .chat-input-area button {
+            background: var(--chat-header-bg);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .theme-toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button class="theme-toggle-btn" onclick="toggleTheme()">Toggle Dark Mode</button>
+
+    <div class="chat-window" id="chat-window">
+        <div class="chat-header">AI Assistant</div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message msg-bot">Hello! I am a bot.</div>
+            <div class="message msg-user">Hello! I am a user.</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" placeholder="Type a message...">
+            <button>Send</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+
+</body>
+
+</html>

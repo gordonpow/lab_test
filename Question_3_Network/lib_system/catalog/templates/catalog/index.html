@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧圖書館系統</title>
+    <style>
+        /* === 原有的樣式 === */
+        /* === 原有的樣式 === */
+        :root {
+            --bg-color: #f5f7fa;
+            --text-color: #333;
+            --card-bg: white;
+            --header-text: #2c3e50;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --input-bg: white;
+            --input-border: #ddd;
+            /* Chatbot Variables (Light) */
+            --chat-bg: white;
+            --msg-bg-bot: #e0e0e0;
+            --msg-text-bot: #333;
+            --msg-bg-user: #3498db;
+            --msg-text-user: white;
+            --chat-header-bg: #3498db;
+            --chat-input-area-bg: white;
+        }
+
+        body.dark-mode {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --card-bg: #2d2d2d;
+            --header-text: #ecf0f1;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --input-bg: #333;
+            --input-border: #555;
+            /* Chatbot Variables (Dark) */
+            --chat-bg: #2d2d2d;
+            --msg-bg-bot: #444;
+            --msg-text-bot: #ddd;
+            --msg-bg-user: #1d6fa5;
+            --msg-text-user: #e0e0e0;
+            --chat-header-bg: #1d6fa5;
+            --chat-input-area-bg: #2d2d2d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max_width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--header-text);
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            width: 300px;
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 25px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        button#search-btn {
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        button#search-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .book-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
+
+        .book-author {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .book-status {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .status-available {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .status-out {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .borrow-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-green {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .btn-gray {
+            background-color: #bdc3c7;
+            color: white;
+            cursor: not-allowed;
+        }
+
+        /* === 新增：聊天機器人樣式 === */
+        .chat-widget-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            font-size: 30px;
+            z-index: 1000;
+            transition: transform 0.3s;
+        }
+
+        .chat-widget-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Dark Mode Toggle Button */
+        .theme-toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--input-border);
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            transition: 0.3s;
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 450px;
+            height: 450px;
+            background: var(--chat-bg);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            display: none;
+            /* 預設隱藏 */
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+            border: 1px solid var(--input-border);
+        }
+
+        .chat-header {
+            background: var(--chat-header-bg);
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .close-chat {
+            cursor: pointer;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            padding: 15px;
+            overflow-y: auto;
+            background: var(--bg-color);
+            /* 與網頁背景一致，或可自訂 */
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            white-space: pre-wrap;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .msg-bot {
+            background: var(--msg-bg-bot);
+            color: var(--msg-text-bot);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .msg-user {
+            background: var(--msg-bg-user);
+            color: var(--msg-text-user);
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-input-area {
+            padding: 10px;
+            border-top: 1px solid var(--input-border);
+            display: flex;
+            gap: 10px;
+            background: var(--chat-input-area-bg);
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .chat-input-area button {
+            background: var(--chat-header-bg);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        /* 新增：聊天視窗內的書籍卡片樣式 */
+        .chat-book-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 13px;
+            text-align: left;
+        }
+
+        .chat-book-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .chat-book-meta {
+            color: #7f8c8d;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .chat-borrow-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 12px;
+        }
+
+        .chat-borrow-btn:hover {
+            background-color: #219150;
+        }
+
+        .chat-borrow-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>📚 智慧圖書館線上系統</h1>
+            <div style="margin-bottom: 20px;">
+                <a href="/my-books/"
+                    style="text-decoration:none; background:#2c3e50; color:white; padding:10px 20px; border-radius:5px;">
+                    👤 進入我的書房 (還書)
+                </a>
+            </div>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="輸入書名、作者或是 ISBN...">
+                <button id="search-btn">搜尋</button>
+            </div>
+        </header>
+
+        <div id="book-list" class="book-grid">
+            <p style="text-align:center; width:100%;">載入書籍中...</p>
+        </div>
+    </div>
+
+    <button class="theme-toggle-btn" onclick="toggleTheme()">🌓 切換模式</button>
+
+    <div class="chat-widget-btn" onclick="toggleChat()">🤖</div>
+
+    <div class="chat-window" id="chat-window">
+        <div class="chat-header">
+            <span>AI 圖書推薦員 (Ollama)</span>
+            <span class="close-chat" onclick="toggleChat()">✕</span>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message msg-bot">您好！我是圖書館 AI 助理。<br>想學什麼新技能嗎？告訴我，我會根據現有館藏推薦給您！</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="例如：我想學 Python..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">送出</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchBooks(); // 載入書籍
+            loadTheme();  // 載入主題
+
+            // 綁定搜尋按鈕
+            document.getElementById('search-btn').addEventListener('click', () => {
+                const query = document.getElementById('search-input').value;
+                fetchBooks(query);
+            });
+        });
+
+        // --- 0. 主題切換 (新增) ---
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        // --- 1. 取得 Django 的 CSRF Token (安全驗證用) ---
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // --- 2. 抓取書籍列表 ---
+        async function fetchBooks(query = '') {
+            const listContainer = document.getElementById('book-list');
+            listContainer.innerHTML = '<p>讀取中...</p>';
+
+            try {
+                let url = '/api/books/';
+                if (query) url += `?search=${encodeURIComponent(query)}`;
+
+                const response = await fetch(url);
+                const books = await response.json();
+
+                listContainer.innerHTML = '';
+
+                if (books.length === 0) {
+                    listContainer.innerHTML = '<p>找不到相關書籍。</p>';
+                    return;
+                }
+
+                books.forEach(book => {
+                    const isAvailable = book.available_copies > 0;
+
+                    const statusHtml = isAvailable
+                        ? `<span class="status-available">● 可借閱 (${book.available_copies})</span>`
+                        : `<span class="status-out">● 已借光</span>`;
+
+                    const buttonHtml = isAvailable
+                        ? `<button class="borrow-btn btn-green" onclick="borrowBook(${book.id})">我要借書</button>`
+                        : `<button class="borrow-btn btn-gray" disabled>暫無庫存</button>`;
+
+                    const card = `
+                    <div class="book-card">
+                        <div class="book-title">${book.title}</div>
+                        <div class="book-author">作者：${book.author}</div>
+                        <div class="book-status">${statusHtml}</div>
+                        ${buttonHtml}
+                    </div>
+                `;
+                    listContainer.innerHTML += card;
+                });
+
+            } catch (error) {
+                console.error('Error:', error);
+                listContainer.innerHTML = '<p style="color:red">連線錯誤</p>';
+            }
+        }
+
+        // --- 3. 借書功能 (呼叫 API) ---
+        async function borrowBook(bookId) {
+            const csrftoken = getCookie('csrftoken');
+
+            try {
+                const response = await fetch(`/api/books/${bookId}/borrow/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('🎉 借閱成功！記得要在 14 天內歸還喔！');
+                    fetchBooks();
+                } else {
+                    if (response.status === 403) {
+                        alert('⛔ 借閱失敗：您尚未登入。\n\n請先到 /admin 登入管理員帳號！');
+                    } else {
+                        alert('⛔ 失敗：' + (data.error || '未知錯誤'));
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('系統錯誤，請檢查 Console');
+            }
+        }
+
+        // --- 4. 新增：聊天機器人邏輯 ---
+        function toggleChat() {
+            const win = document.getElementById('chat-window');
+            if (win.style.display === 'none' || win.style.display === '') {
+                win.style.display = 'flex';
+            } else {
+                win.style.display = 'none';
+            }
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const msgBox = document.getElementById('chat-messages');
+            const userText = input.value.trim();
+
+            if (!userText) return;
+
+            // 1. 顯示使用者訊息
+            msgBox.innerHTML += `<div class="message msg-user">${userText}</div>`;
+            input.value = '';
+            msgBox.scrollTop = msgBox.scrollHeight;
+
+            // 顯示載入中
+            const loadingId = 'loading-' + Date.now();
+            msgBox.innerHTML += `<div class="message msg-bot" id="${loadingId}">思考中...</div>`;
+            msgBox.scrollTop = msgBox.scrollHeight;
+
+            try {
+                // 2. 呼叫後端
+                const response = await fetch('/chatbot/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: userText })
+                });
+                const data = await response.json();
+
+                // 3. 顯示 AI 文字回覆
+                const loadingMsg = document.getElementById(loadingId);
+                loadingMsg.innerHTML = data.reply || "發生錯誤";
+
+                // === 關鍵修改：處理多本書 ===
+                // 檢查 data.books 是否存在且有內容
+                if (data.books && data.books.length > 0) {
+
+                    let allCardsHtml = '';
+
+                    // 使用 forEach 迴圈，把每一本書都做成一張卡片
+                    data.books.forEach(book => {
+                        const isAvailable = book.available_copies > 0;
+
+                        const btnHtml = isAvailable
+                            ? `<button class="chat-borrow-btn" onclick="borrowBook(${book.id})">立即借閱</button>`
+                            : `<button class="chat-borrow-btn" disabled>目前無庫存</button>`;
+
+                        // 這裡加一點 margin-top 讓卡片之間有空隙
+                        allCardsHtml += `
+                        <div class="chat-book-card" style="margin-top: 10px;">
+                            <div class="chat-book-title">📖 ${book.title}</div>
+                            <div class="chat-book-meta">作者: ${book.author} | 剩餘: ${book.available_copies}</div>
+                            ${btnHtml}
+                        </div>
+                    `;
+                    });
+
+                    // 把所有卡片一次加到文字訊息的下方
+                    loadingMsg.insertAdjacentHTML('afterend', allCardsHtml);
+                }
+                // ==========================
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById(loadingId).innerText = "連線失敗";
+            }
+
+            // 確保視窗捲動到最下面，讓使用者看到新跳出來的卡片
+            msgBox.scrollTop = msgBox.scrollHeight;
+        }
+    </script>
+
+</body>
+
+</html>
