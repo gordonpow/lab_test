@@ -9,7 +9,9 @@
 ```mermaid
 graph TD
     A["原始影片資料 (Video Data)"] -->|video_processor.py| B("影片轉圖片訊框 Frame Extraction")
+    I["網路圖片 (Web Images)"] -->|downloader.py| J("網路圖片下載 Image Downloading")
     B --> C{"建立資料集 Dataset"}
+    J --> C
     C -->|標註 Labeling| D["YOLO 格式資料集"]
     D -->|train.py| E["訓練 YOLOv11 模型 Model Training"]
     E --> F["取得最佳權重 best.pt"]
@@ -20,6 +22,7 @@ graph TD
 ## 3. 功能 (Features)
 本專案包含以下核心功能：
 - **影片資料預處理**: 透過 `video_processor.py` 自動掃描目錄下的影片檔，並將其分割為圖片幀（Frames），自動依據資料夾名稱分類，建立訓練所需的圖像數據集。
+- **網路圖片收集**: 透過 `downloader.py` 從網路下載特定關鍵字的圖片，充實資料集的多樣性。
 - **高效模型訓練**: 使用 `train.py` 調用 Ultralytics YOLOv11m 模型進行訓練，針對硬幣特徵進行優化 (預設 100 epochs, 640x640 解析度)。
 - **即時偵測與計數**: `yolo_coin_counter.py` 腳本可啟動攝影機，即時捕捉畫面，識別硬幣種類（支援自定義面額對應），並在畫面上即時顯示個別硬幣金額與總金額。
 
