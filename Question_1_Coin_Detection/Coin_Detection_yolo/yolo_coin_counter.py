@@ -5,7 +5,7 @@ def main():
     # --- 1. 載入你訓練好的 YOLOv11 模型 ---
     # 請將 'your_model_path/best.pt' 替換為你實際的 best.pt 檔案路徑
     # 範例: model = YOLO(r"C:\AI_program\coin_1\coin_1\runs\coin_project\coin_yolo11\weights\best.pt")
-    model = YOLO(r"runs\detect\runs\coin_project\coin_yolo112\weights\best.pt") # 假設 best.pt 在專案根目錄下的相對路徑
+    model = YOLO(r"runs\coin_project\coin_yolo11\weights\best.pt") # 假設 best.pt 在專案根目錄下的相對路徑
 
     # --- 2. 開啟相機 ---
     cap = cv2.VideoCapture(0) # 0 代表預設的網路攝影機

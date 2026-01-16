@@ -10,16 +10,20 @@ def start_training():
 
     # 3. 開始訓練
     print("開始訓練 YOLOv11 模型...")
+    
+    # 設定絕對路徑
+    project_path = os.path.abspath("runs/coin_project")
+    
     model.train(
         data=yaml_path,
         epochs=100,       # 訓練 100 輪，效果會比較穩
         imgsz=640,        # 使用我們建議的 640 尺寸
         device="0",     # 如果你有 NVIDIA 顯卡，可以改用 0
-        project="runs/coin_project", 
+        project=project_path, 
         name="coin_yolo11",
         plots=True        # 產出訓練結果圖表
     )
-    print("訓練完成！最佳模型儲存在：runs/coin_project/coin_yolo11/weights/best.pt")
+    print(f"訓練完成！最佳模型儲存在：{os.path.join(project_path, 'coin_yolo11', 'weights', 'best.pt')}")
 
 if __name__ == "__main__":
     start_training()
